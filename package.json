@@ -1,0 +1,21 @@
+{
+  "name": "web-serial-monitor",
+  "version": "0.1.0",
+  "description": "JavaScript library to interact with serial devices using the Web Serial API.",
+  "type": "module",
+  "main": "index.js",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "node ./test/server.js"
+  },
+  "keywords": [
+    "browser",
+    "web",
+    "serial",
+    "api",
+    "monitor"
+  ],
+  "author": "Pablo Marozzi <pablomarozzi@multimapa.com> (https://blog.multimapa.com/)",
+  "license": "GPL-3.0"
+}
+

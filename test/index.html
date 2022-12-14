@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Web Serial Monitor</title>
+    </head>
+    <body style="font-family: system-ui;">
+        <section style="text-align: center;">
+            <h1>Web Serial Monitor</h1>
+            <h3 style="color: #e37d15;">Open the console for outputs !!!</h3>
+            <span>Bauds</span>
+            <select id="bauds">
+                <option value="9600">9600</option>
+                <option value="19200">19200</option>
+                <option value="28800">28800</option>
+                <option value="38400">38400</option>
+                <option value="57600">57600</option>
+                <option value="76800">76800</option>
+                <option value="115200">115200</option>
+            </select>
+            <input type="checkbox" id="parselines" checked><span> Parse incoming lines</span>
+            <div style="padding: 10px;"><input type="button" id="connect" value="Connect"></div>
+            <div style="padding: 10px;">
+                <input type="text" id="line" value="" style="width: 25rem;">
+                <input type="button" id="send" value="send">
+                <input type="checkbox" id="newline" checked><span> New line</span>
+            </div>
+        </section>
+    </body>
+    <script>
+        (async () => {
+            
+            const {default: WebSerialMonitor} = await import("./index.js");
+
+            let serial;
+            let connected = false;
+
+            const handleSerialEvent = (ev) => {
+                console.log(ev.detail);
+                if(ev.type === "serial-connected") {
+                    document.getElementById("connect").value = 'Disconnect';
+                    connected = true;
+                }
+
+                if(ev.type === "serial-disconnected") {
+                    document.getElementById("connect").value = 'Connect';
+                    connected = false;
+                }
+            }
+
+            document.getElementById("connect").addEventListener('click', (ev) => {
+                if(connected) {
+                    serial.disconnect();
+                    serial = null;
+                    return;
+                }
+
+                if(document.getElementById('parselines').checked)
+                    serial = new WebSerialMonitor({parseLines: true});
+                else
+                    serial = new WebSerialMonitor({parseLines: false});
+
+                serial.addEventListener('serial-connected', handleSerialEvent);
+
+                serial.addEventListener('serial-disconnected', handleSerialEvent);
+
+                serial.addEventListener('serial-error', handleSerialEvent);
+
+                serial.addEventListener('serial-data', handleSerialEvent);
+
+                const el = document.getElementById("bauds");
+                const bauds = el.options[el.selectedIndex].value;
+                serial.connect(parseInt(bauds)).then(() => {
+                    console.log("Serial port connected (.then() method)");
+                });
+            });
+
+            document.getElementById("send").addEventListener('click', (ev) => { 
+                let line = document.getElementById('line').value;
+                if(document.getElementById('newline').checked)
+                    line += '\n';
+                serial.send(line);
+            });
+        })();
+    </script>
+</html>
