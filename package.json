@@ -15,6 +15,11 @@
     "api",
     "monitor"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PabloMarozzi/Web-Serial-Monitor.git"
+  },
+  "homepage": "https://github.com/PabloMarozzi/Web-Serial-Monitor",
   "author": "Pablo Marozzi <pablomarozzi@multimapa.com> (https://blog.multimapa.com/)",
   "license": "GPL-3.0"
 }
