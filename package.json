@@ -1,5 +1,5 @@
 {
-  "name": "web-serial-monitor",
+  "name": "@ridge18/web-serial-monitor",
   "version": "0.1.0",
   "description": "JavaScript library to interact with serial devices using the Web Serial API.",
   "type": "module",

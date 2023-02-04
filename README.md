@@ -14,7 +14,7 @@ The library allow to send data and receive data in text or binary modes.
 
 Use npm to install this library in a nodejs project:
 ```bash
-npm install web-serial-monitor
+npm install @ridge18/web-serial-monitor
 ```
 
 ## Usage
