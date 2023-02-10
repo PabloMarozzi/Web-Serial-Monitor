@@ -21,21 +21,21 @@ npm install @ridge18/web-serial-monitor
 
 Init in text mode (defaut)
 ```js
-import SerialMonitor from 'web-serial-monitor';
+import SerialMonitor from '@ridge18/web-serial-monitor';
 
 const serial = new SerialMonitor({mode: "text"});
 ```
 
 Init in text mode with line parser (line break: '\n')
 ```js
-import SerialMonitor from 'web-serial-monitor';
+import SerialMonitor from '@ridge18/web-serial-monitor';
 
 const serial = new SerialMonitor({mode: "text", parseLines: true});
 ```
 
 Init in binary mode
 ```js
-import SerialMonitor from 'web-serial-monitor';
+import SerialMonitor from '@ridge18/web-serial-monitor';
 
 const serial = new SerialMonitor({mode: "byte", hex: true});
 ```
