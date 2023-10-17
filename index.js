@@ -88,17 +88,16 @@
         if(this.#port != null) {
             const event = new CustomEvent("serial-error", { detail: "Close current connection first" });
             this.dispatchEvent(event);
+            return Promise.reject(new Error("Close current connection first"));
         }
 
         const p = await navigator.serial.requestPort().catch((error) => {
             const event = new CustomEvent("serial-error", { detail: "No port selected" });
             this.dispatchEvent(event);
+            return Promise.reject(new Error(error));
         });
 
-        if(p === undefined) 
-            return;
-        else 
-            this.#port = p;
+        this.#port = p;
 
         await this.#port.open({baudRate: bauds}).then(() => {
             if(this.#byteMode) {
@@ -128,10 +127,14 @@
             this.dispatchEvent(event);
 
             this.#readLoop();
+            
         }).catch((error) => {
-            const event = new CustomEvent("serial-error", { detail: error });
+            const event = new CustomEvent("serial-error", { detail: error.message });
             this.dispatchEvent(event);
+            return Promise.reject(error);
         });
+
+        return "Serial port connected";
     }
 
     /**
@@ -163,12 +166,15 @@
         }
 
         await this.#port.close().catch((error) => {
-            console.log(error);
+            const event = new CustomEvent("serial-error", { detail: error.message });
+            this.dispatchEvent(event);
+            return Promise.reject(error);
         });
         this.#port = null;
 
         const event = new CustomEvent("serial-disconnected", { detail: "Serial port disconnected" });
         this.dispatchEvent(event);
+        return "Serial port disconnected";
     }
 
     /**
@@ -185,7 +191,7 @@
             const event = new CustomEvent("serial-error", { detail: "No serial port" });
             this.dispatchEvent(event);
         }
-     }
+    }
 
 }
 
